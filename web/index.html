@@ -3,114 +3,133 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel SaaS Chatbot IA</title>
+  <title>LK IA SERVICES</title>
   <style>
-    :root{--bg:#0a1022;--panel:#121a33;--panel2:#1b274c;--text:#edf1ff;--muted:#9fb2e9;--line:#2a3970;--pri:#4f7cff;--ok:#31d49a}
-    *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif} body{margin:0;background:linear-gradient(120deg,#0a1022,#111b39);color:var(--text)}
-    .hidden{display:none!important}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
-    .sidebar{background:var(--panel);border-right:1px solid var(--line);padding:16px}.logo{font-weight:800;margin:0 0 14px}
-    .menu button{display:block;width:100%;text-align:left;margin:8px 0;padding:10px;border-radius:10px;border:1px solid var(--line);background:#0f1733;color:var(--text);cursor:pointer}
-    .menu button.active{background:var(--pri);border-color:var(--pri)}
-    .main{padding:20px}.top{display:flex;justify-content:space-between;align-items:center;gap:10px}.badge{padding:6px 10px;background:#173064;border:1px solid var(--line);border-radius:999px}
-    .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:16px}
-    .grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}.kpi{display:flex;justify-content:space-between;padding:10px;background:#101a3a;border-radius:10px}
-    input,textarea,select,button{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:#0d1430;color:var(--text)}
-    button{cursor:pointer;background:var(--pri);border:none;font-weight:700}.chat{height:260px;overflow:auto;background:#0d1530;border-radius:10px;padding:10px}
-    .msg{margin:8px 0;padding:8px 10px;border-radius:10px;max-width:85%}.u{margin-left:auto;background:#2a3d79}.b{background:#203058}
-    .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}.login{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
-    .muted{color:var(--muted);font-size:13px}
+    :root{--bg:#070b1a;--panel:#121a33;--panel2:#1a274d;--line:#2c3d78;--txt:#eef3ff;--muted:#9fb0e5;--pri:#4f7cff;--ok:#2ed49b}
+    *{box-sizing:border-box;font-family:Inter,system-ui,sans-serif} body{margin:0;background:radial-gradient(circle at 20% 10%,#1a2c61,#070b1a 55%);color:var(--txt)}
+    .hidden{display:none!important}.auth{min-height:100vh;display:grid;place-items:center;padding:16px}
+    .card{background:rgba(18,26,51,.92);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 10px 30px #0007}
+    .w{width:min(430px,100%)} h1,h2,h3{margin:0 0 8px}.muted{color:var(--muted);font-size:13px}
+    input,textarea,select,button{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:#0f1733;color:var(--txt)}
+    button{cursor:pointer;background:linear-gradient(90deg,#4f7cff,#6e8fff);border:none;font-weight:700}
+    .switch{display:flex;gap:8px;margin:12px 0}.switch button{background:#1c2a53}.switch .active{background:linear-gradient(90deg,#4f7cff,#6e8fff)}
+    .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}.sidebar{padding:16px;background:#0f1630;border-right:1px solid var(--line)}
+    .brand{font-size:18px;font-weight:800;margin-bottom:16px}.menu button{text-align:left;margin:8px 0}.menu button.active{outline:2px solid #88a7ff}
+    .main{padding:20px}.top{display:flex;justify-content:space-between;align-items:center}.grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}
+    .kpi{padding:12px;border-radius:12px;background:#101a3a;border:1px solid var(--line);display:flex;justify-content:space-between}
+    .chat{height:250px;background:#0d1530;border:1px solid var(--line);border-radius:10px;padding:10px;overflow:auto}.msg{margin:8px 0;padding:8px 10px;border-radius:10px;max-width:80%}.u{margin-left:auto;background:#2b3f7d}.b{background:#203058}
+    #floatingBot{position:fixed;right:18px;bottom:18px;width:68px;height:68px;border-radius:999px;border:none;background:linear-gradient(135deg,#ffde59,#ff9f43);font-size:30px;cursor:grab;z-index:9999;box-shadow:0 10px 24px #0008}
+    #floatingBot:active{cursor:grabbing}
   </style>
 </head>
 <body>
-  <section id="loginView" class="login-wrap">
-    <div class="login">
-      <h2>Iniciar sesión</h2>
-      <p class="muted">Cliente: cualquier email + contraseña. Admin: admin/admin</p>
-      <label>Email</label><input id="email" type="email" placeholder="cliente@empresa.com" />
-      <label>Contraseña</label><input id="password" type="password" placeholder="********" />
-      <button id="loginBtn" style="margin-top:10px">Entrar</button>
-      <p id="loginMsg" class="muted"></p>
+<section id="auth" class="auth">
+  <div class="card w">
+    <h1>LK IA SERVICES</h1>
+    <p class="muted">Plataforma empresarial para chatbot IA en WhatsApp</p>
+    <div class="switch">
+      <button id="tabLogin" class="active">Login</button>
+      <button id="tabRegister">Crear usuario</button>
     </div>
-  </section>
+    <div id="loginPanel">
+      <label>Correo</label><input id="loginEmail" type="email" placeholder="empresa@correo.com"/>
+      <label>Contraseña</label><input id="loginPass" type="password"/>
+      <button id="btnLogin" style="margin-top:10px">Entrar</button>
+      <p class="muted">Admin: <b>admin/admin</b></p>
+    </div>
+    <div id="registerPanel" class="hidden">
+      <label>Número de teléfono</label><input id="regPhone" placeholder="+34 600 000 000"/>
+      <label>Correo (inicio de sesión)</label><input id="regEmail" type="email" placeholder="nuevo@empresa.com"/>
+      <label>Contraseña</label><input id="regPass" type="password"/>
+      <button id="btnRegister" style="margin-top:10px">Crear cuenta</button>
+    </div>
+    <p id="authMsg" class="muted"></p>
+  </div>
+</section>
 
-  <section id="appView" class="app hidden">
-    <aside class="sidebar">
-      <h3 class="logo">Panel IA WhatsApp</h3>
-      <div class="menu" id="menu"></div>
-      <button id="logout" style="margin-top:18px;background:#384d94">Cerrar sesión</button>
-    </aside>
-    <main class="main">
-      <div class="top">
-        <h2 id="title">Inicio</h2>
-        <span id="roleBadge" class="badge"></span>
-      </div>
-      <div id="content"></div>
-    </main>
-  </section>
+<section id="app" class="app hidden">
+  <aside class="sidebar">
+    <div class="brand">LK IA SERVICES</div>
+    <div class="menu" id="menu"></div>
+    <button id="logout" style="margin-top:12px;background:#374c95">Cerrar sesión</button>
+  </aside>
+  <main class="main">
+    <div class="top"><h2 id="title"></h2><span id="who" class="muted"></span></div>
+    <div id="content"></div>
+  </main>
+</section>
+
+<button id="floatingBot" title="Arrástrame para moverme">😊</button>
 
 <script>
-const usersKey='demo_users';
-const sessionKey='demo_session';
-const menus=['a','b','c','d','e'];
-let state={role:'cliente',email:'',section:'a'};
-function seedUsers(){
-  if(!localStorage.getItem(usersKey)){
-    localStorage.setItem(usersKey, JSON.stringify([
-      {email:'admin',password:'admin',role:'admin',cloudMB:9999,activity:['Creó tenant demo','Cambió precio plan']},
-      {email:'cliente@empresa.com',password:'1234',role:'cliente',cloudMB:250,activity:['Subió catálogo.pdf']}
-    ]));
-  }
-}
-function users(){return JSON.parse(localStorage.getItem(usersKey)||'[]')}
-function saveUsers(v){localStorage.setItem(usersKey,JSON.stringify(v))}
-function login(){
-  const email=document.getElementById('email').value.trim();
-  const password=document.getElementById('password').value.trim();
-  const u=users().find(x=>x.email===email&&x.password===password);
-  if(!u){document.getElementById('loginMsg').textContent='Credenciales inválidas';return}
-  state={role:u.role,email:u.email,section:'a'}; localStorage.setItem(sessionKey,JSON.stringify(state)); render();
-}
-function logout(){localStorage.removeItem(sessionKey); location.reload()}
+const U='lk_users',S='lk_session';
+const menuCliente=['Dashboard','Chatbot','Fuentes','Widget Web','Media IA'];
+const menuAdmin=['Resumen','Usuarios','Servicios','Actividad','Ajustes'];
+let state={role:'cliente',email:'',menu:0};
+const def=[{email:'admin',password:'admin',phone:'-',role:'admin',cloudMB:10000,activity:['Inicio plataforma']}];
+if(!localStorage.getItem(U)) localStorage.setItem(U,JSON.stringify(def));
+const users=()=>JSON.parse(localStorage.getItem(U)||'[]'); const save=v=>localStorage.setItem(U,JSON.stringify(v));
+
+function show(panel){document.getElementById('loginPanel').classList.toggle('hidden',panel!=='login');document.getElementById('registerPanel').classList.toggle('hidden',panel!=='register');document.getElementById('tabLogin').classList.toggle('active',panel==='login');document.getElementById('tabRegister').classList.toggle('active',panel==='register');}
+
+document.getElementById('tabLogin').onclick=()=>show('login');
+document.getElementById('tabRegister').onclick=()=>show('register');
+
+document.getElementById('btnRegister').onclick=()=>{
+  const phone=regPhone.value.trim(),email=regEmail.value.trim(),password=regPass.value.trim();
+  if(!phone||!email||!password) return authMsg.textContent='Completa todos los campos';
+  const data=users(); if(data.some(u=>u.email===email)) return authMsg.textContent='Ese correo ya existe';
+  data.push({phone,email,password,role:'cliente',cloudMB:500,activity:['Cuenta creada']}); save(data);
+  authMsg.textContent='Cuenta creada. Ahora inicia sesión.'; show('login'); loginEmail.value=email; loginPass.value='';
+};
+
+document.getElementById('btnLogin').onclick=()=>{
+  const email=loginEmail.value.trim(),password=loginPass.value.trim();
+  const u=users().find(x=>x.email===email&&x.password===password); if(!u) return authMsg.textContent='Credenciales inválidas';
+  state={role:u.role,email:u.email,menu:0}; localStorage.setItem(S,JSON.stringify(state)); render();
+};
+document.getElementById('logout').onclick=()=>{localStorage.removeItem(S); location.reload()};
+
 function render(){
-  document.getElementById('loginView').classList.add('hidden'); document.getElementById('appView').classList.remove('hidden');
-  document.getElementById('roleBadge').textContent=`${state.role.toUpperCase()} · ${state.email}`;
-  const m=document.getElementById('menu'); m.innerHTML='';
-  menus.forEach(x=>{const b=document.createElement('button'); b.textContent=`Opción ${x.toUpperCase()}`; if(state.section===x)b.classList.add('active'); b.onclick=()=>{state.section=x;renderSection();renderMenuActive()}; m.appendChild(b)});
-  renderSection();
+  auth.classList.add('hidden'); app.classList.remove('hidden'); who.textContent=`${state.role.toUpperCase()} · ${state.email}`;
+  const arr=state.role==='admin'?menuAdmin:menuCliente; menu.innerHTML='';
+  arr.forEach((name,i)=>{const b=document.createElement('button');b.textContent=name;if(i===state.menu)b.classList.add('active');b.onclick=()=>{state.menu=i;paint()};menu.appendChild(b)});
+  paint();
 }
-function renderMenuActive(){[...document.querySelectorAll('.menu button')].forEach((b,i)=>b.classList.toggle('active',menus[i]===state.section));}
-function sectionCliente(){
-  if(state.section==='a') return `<div class='card'><h3>Chat IA (actual)</h3><div id='chat' class='chat'></div><div class='grid' style='grid-template-columns:1fr auto;margin-top:8px'><input id='entrada' placeholder='Escribe...'><button id='send' style='width:auto'>Enviar</button></div></div>`;
-  if(state.section==='b') return `<div class='card'><h3>Fotos y Videos IA personalizados</h3><p class='muted'>Solicita creatividades a medida del cliente.</p><label>Tipo</label><select id='mediaType'><option>Foto</option><option>Video</option></select><label>Prompt creativo</label><textarea id='mediaPrompt' rows='4' placeholder='Ej: video corto promocional de 15s para restaurante'></textarea><button id='genMedia'>Generar</button><p id='mediaOut' class='muted'></p></div>`;
-  if(state.section==='c') return `<div class='card'><h3>Nube de mi cuenta</h3><div id='cloudInfo'></div></div>`;
-  if(state.section==='d') return `<div class='card'><h3>Configuración</h3><p class='muted'>Ajustes de negocio y tono.</p></div>`;
-  return `<div class='card'><h3>Soporte</h3><p class='muted'>Centro de ayuda y tickets.</p></div>`;
+function paint(){
+  const arr=state.role==='admin'?menuAdmin:menuCliente; title.textContent=arr[state.menu];
+  content.innerHTML=state.role==='admin'?adminView():clientView(); bind();
 }
-function sectionAdmin(){
-  if(state.section==='a') return `<div class='card'><h3>Resumen global</h3><div class='grid g2'><div class='kpi'><span>Cuentas</span><strong>${users().length}</strong></div><div class='kpi'><span>Storage total</span><strong>${users().reduce((a,b)=>a+(b.cloudMB||0),0)} MB</strong></div></div></div>`;
-  if(state.section==='b') return `<div class='card'><h3>Actividad de clientes</h3><ul>${users().map(u=>`<li><b>${u.email}</b>: ${(u.activity||[]).join(' · ')||'Sin actividad'}</li>`).join('')}</ul></div>`;
-  if(state.section==='c') return `<div class='card'><h3>Modificar servicios</h3><label>Usuario</label><select id='selUser'>${users().map((u,i)=>`<option value='${i}'>${u.email}</option>`).join('')}</select><label>Cuota nube (MB)</label><input id='newQuota' type='number' placeholder='500'><button id='saveQuota'>Guardar cambios</button><p id='adminMsg' class='muted'></p></div>`;
-  if(state.section==='d') return `<div class='card'><h3>Planes y precios</h3><p class='muted'>Gestiona catálogos de servicios.</p></div>`;
-  return `<div class='card'><h3>Logs del sistema</h3><p class='muted'>Auditoría básica.</p></div>`;
+function clientView(){
+  if(state.menu===0) return `<div class='grid g2'><div class='kpi'><span>Conversaciones</span><b>38</b></div><div class='kpi'><span>Nube disponible</span><b>${users().find(u=>u.email===state.email)?.cloudMB||0} MB</b></div></div>`;
+  if(state.menu===1) return `<div class='card'><h3>Chatbot</h3><div id='chat' class='chat'></div><div class='grid' style='grid-template-columns:1fr auto;margin-top:8px'><input id='inMsg' placeholder='Escribe...'><button id='send' style='width:auto'>Enviar</button></div></div>`;
+  if(state.menu===2) return `<div class='card'><h3>Conectar fuentes</h3><p class='muted'>Vincula web, CRM, catálogo y documentos para entrenar contexto.</p><label>URL Web vendedor</label><input id='srcWeb' placeholder='https://mi-tienda.com'><label>CRM/API Key</label><input id='srcCrm' placeholder='api_xxx'><button id='saveSrc'>Guardar conexiones</button><p id='srcMsg' class='muted'></p></div>`;
+  if(state.menu===3) return `<div class='card'><h3>Widget web adaptable</h3><p class='muted'>El botón 😊 flotante se puede arrastrar por toda la pantalla y queda siempre visible.</p></div>`;
+  return `<div class='card'><h3>Crear fotos y videos IA</h3><label>Tipo</label><select id='type'><option>Foto</option><option>Video</option></select><label>Instrucción</label><textarea id='prompt'></textarea><button id='gen'>Generar</button><p id='genMsg' class='muted'></p></div>`;
 }
-function renderSection(){
-  const c=document.getElementById('content');
-  document.getElementById('title').textContent=`Opción ${state.section.toUpperCase()}`;
-  c.innerHTML=state.role==='admin'?sectionAdmin():sectionCliente();
-  bindSectionEvents();
+function adminView(){
+  if(state.menu===0) return `<div class='grid g2'><div class='kpi'><span>Usuarios</span><b>${users().length}</b></div><div class='kpi'><span>Storage total</span><b>${users().reduce((a,b)=>a+(b.cloudMB||0),0)} MB</b></div></div>`;
+  if(state.menu===1) return `<div class='card'><h3>Gestión usuarios</h3><ul>${users().map(u=>`<li>${u.email} (${u.role}) - ${u.phone}</li>`).join('')}</ul></div>`;
+  if(state.menu===2) return `<div class='card'><h3>Modificar servicios</h3><label>Usuario</label><select id='uSel'>${users().map((u,i)=>`<option value='${i}'>${u.email}</option>`)}</select><label>Cuota nube MB</label><input id='q' type='number'><button id='saveQ'>Actualizar</button><p id='qMsg' class='muted'></p></div>`;
+  if(state.menu===3) return `<div class='card'><h3>Actividad global</h3><ul>${users().map(u=>`<li><b>${u.email}</b>: ${(u.activity||[]).join(' · ')}</li>`).join('')}</ul></div>`;
+  return `<div class='card'><h3>Ajustes plataforma</h3><p class='muted'>Configura servicios globales.</p></div>`;
 }
-function bindSectionEvents(){
-  if(state.role==='cliente' && state.section==='a'){
-    const chat=document.getElementById('chat'); const add=(t,cls)=>{const d=document.createElement('div');d.className='msg '+cls;d.textContent=t;chat.appendChild(d)}; add('Hola, soy tu asistente IA.','b');
-    document.getElementById('send').onclick=()=>{const i=document.getElementById('entrada');if(!i.value.trim())return;add(i.value,'u');add('Gracias, te ayudo con eso ahora mismo.','b');i.value='';chat.scrollTop=chat.scrollHeight;};
-  }
-  if(state.role==='cliente' && state.section==='b'){document.getElementById('genMedia').onclick=()=>{const t=document.getElementById('mediaType').value;document.getElementById('mediaOut').textContent=`Solicitud enviada: ${t} personalizado en cola de generación.`;};}
-  if(state.role==='cliente' && state.section==='c'){const u=users().find(x=>x.email===state.email);document.getElementById('cloudInfo').innerHTML=`<div class='kpi'><span>Cuota disponible</span><strong>${u?.cloudMB||0} MB</strong></div>`;}
-  if(state.role==='admin' && state.section==='c'){document.getElementById('saveQuota').onclick=()=>{const idx=+document.getElementById('selUser').value;const q=+document.getElementById('newQuota').value;const data=users();if(Number.isNaN(q)||q<0)return;data[idx].cloudMB=q;data[idx].activity=[...(data[idx].activity||[]),`Admin actualizó cuota a ${q} MB`];saveUsers(data);document.getElementById('adminMsg').textContent='Servicio actualizado correctamente';};}
+function bind(){
+  if(state.role==='cliente'&&state.menu===1){const c=document.getElementById('chat');const add=(t,cl)=>{const d=document.createElement('div');d.className='msg '+cl;d.textContent=t;c.appendChild(d)};add('Hola, soy LK IA 😊','b');send.onclick=()=>{if(!inMsg.value.trim())return;add(inMsg.value,'u');add('Perfecto, ya lo proceso con tus fuentes conectadas.','b');inMsg.value='';c.scrollTop=c.scrollHeight;};}
+  if(state.role==='cliente'&&state.menu===2){saveSrc.onclick=()=>{srcMsg.textContent='Conexiones guardadas (demo).';const d=users();const i=d.findIndex(x=>x.email===state.email);d[i].activity.push('Actualizó fuentes de datos');save(d);};}
+  if(state.role==='cliente'&&state.menu===4){gen.onclick=()=>genMsg.textContent=`Solicitud de ${type.value} enviada correctamente.`;}
+  if(state.role==='admin'&&state.menu===2){saveQ.onclick=()=>{const d=users(),i=+uSel.value,val=+q.value;if(Number.isNaN(val)||val<0)return;d[i].cloudMB=val;d[i].activity.push(`Admin cambió cuota a ${val} MB`);save(d);qMsg.textContent='Actualizado';};}
 }
 
-document.getElementById('loginBtn').onclick=login; document.getElementById('logout').onclick=logout; seedUsers();
-const ses=JSON.parse(localStorage.getItem(sessionKey)||'null'); if(ses){state=ses;render();}
+// Floating draggable smile widget
+(function(){
+  const bot=document.getElementById('floatingBot'); let drag=false,dx=0,dy=0;
+  bot.addEventListener('mousedown',e=>{drag=true;dx=e.clientX-bot.offsetLeft;dy=e.clientY-bot.offsetTop;});
+  window.addEventListener('mousemove',e=>{if(!drag)return;bot.style.left=(e.clientX-dx)+'px';bot.style.top=(e.clientY-dy)+'px';bot.style.right='auto';bot.style.bottom='auto';});
+  window.addEventListener('mouseup',()=>drag=false);
+})();
+
+const ses=JSON.parse(localStorage.getItem(S)||'null'); if(ses){state=ses;render();}
 </script>
 </body>
 </html>

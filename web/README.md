@@ -1,19 +1,26 @@
-# Web demo visual (cliente + admin)
+# LK IA SERVICES (demo UI)
 
-## Acceso
-- Cliente demo: `cliente@empresa.com` / `1234`
-- Admin demo: `admin` / `admin`
+## Login y registro
+- Login normal por correo + contraseña.
+- Registro de usuario con:
+  - Número de teléfono
+  - Correo (método de login)
+  - Contraseña elegida
+- Admin global: `admin / admin`
 
-## Funciones incluidas
-- Login con rol.
-- Menú lateral izquierdo con opciones `A, B, C, D, E`.
-- Vista cliente:
-  - Chat IA (simulado)
-  - Solicitud de fotos/videos personalizados IA
-  - Cuota de nube por cuenta
-- Vista admin:
-  - Resumen global
-  - Actividad de clientes
-  - Modificación de cuota de nube por usuario
+## Menú cliente
+- Dashboard
+- Chatbot
+- Fuentes (web/CRM/documentos)
+- Widget Web
+- Media IA (fotos/videos)
 
-> Persistencia local mediante `localStorage` (demo frontend-only).
+## Menú administrador
+- Resumen
+- Usuarios
+- Servicios (modificar cuota nube)
+- Actividad
+- Ajustes
+
+## Widget adaptable
+Hay un botón flotante 😊 siempre visible y arrastrable por pantalla para simular el chatbot incrustable en web del vendedor.
