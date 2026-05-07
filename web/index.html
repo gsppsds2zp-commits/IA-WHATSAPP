@@ -3,115 +3,114 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel Chatbot IA WhatsApp</title>
+  <title>Panel SaaS Chatbot IA</title>
   <style>
-    :root{--bg:#0b1020;--card:#151d35;--soft:#223058;--text:#e8ecff;--muted:#9db0e8;--ok:#3ddc97}
-    *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif}
-    body{margin:0;background:linear-gradient(120deg,#0b1020,#101834);color:var(--text)}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px}
-    .grid{display:grid;gap:16px}
-    .g2{grid-template-columns:1fr 1fr}
-    .card{background:var(--card);border:1px solid #26335f;border-radius:14px;padding:16px}
-    h1,h2{margin:0 0 8px}
-    .muted{color:var(--muted);font-size:14px}
-    input,textarea,select,button{width:100%;padding:10px;border-radius:10px;border:1px solid #32457f;background:#0d1530;color:var(--text)}
-    button{background:#2f4fd8;border:none;font-weight:700;cursor:pointer}
-    .chat{height:280px;overflow:auto;background:#0d1530;border-radius:10px;padding:10px}
-    .msg{padding:8px 10px;border-radius:10px;margin:8px 0;max-width:80%}
-    .u{background:#2a3d79;margin-left:auto}
-    .b{background:#203058}
-    .kpi{display:flex;justify-content:space-between;padding:10px;border-radius:10px;background:#101a3a;margin-top:8px}
-    .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--ok);margin-right:6px}
+    :root{--bg:#0a1022;--panel:#121a33;--panel2:#1b274c;--text:#edf1ff;--muted:#9fb2e9;--line:#2a3970;--pri:#4f7cff;--ok:#31d49a}
+    *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif} body{margin:0;background:linear-gradient(120deg,#0a1022,#111b39);color:var(--text)}
+    .hidden{display:none!important}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+    .sidebar{background:var(--panel);border-right:1px solid var(--line);padding:16px}.logo{font-weight:800;margin:0 0 14px}
+    .menu button{display:block;width:100%;text-align:left;margin:8px 0;padding:10px;border-radius:10px;border:1px solid var(--line);background:#0f1733;color:var(--text);cursor:pointer}
+    .menu button.active{background:var(--pri);border-color:var(--pri)}
+    .main{padding:20px}.top{display:flex;justify-content:space-between;align-items:center;gap:10px}.badge{padding:6px 10px;background:#173064;border:1px solid var(--line);border-radius:999px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:16px}
+    .grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}.kpi{display:flex;justify-content:space-between;padding:10px;background:#101a3a;border-radius:10px}
+    input,textarea,select,button{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:#0d1430;color:var(--text)}
+    button{cursor:pointer;background:var(--pri);border:none;font-weight:700}.chat{height:260px;overflow:auto;background:#0d1530;border-radius:10px;padding:10px}
+    .msg{margin:8px 0;padding:8px 10px;border-radius:10px;max-width:85%}.u{margin-left:auto;background:#2a3d79}.b{background:#203058}
+    .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}.login{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
+    .muted{color:var(--muted);font-size:13px}
   </style>
 </head>
 <body>
-  <div class="wrap grid">
-    <div class="card">
-      <h1>Panel SaaS · Chatbot IA para WhatsApp</h1>
-      <p class="muted"><span class="dot"></span>Demo visual funcional del panel admin (MVP).</p>
+  <section id="loginView" class="login-wrap">
+    <div class="login">
+      <h2>Iniciar sesión</h2>
+      <p class="muted">Cliente: cualquier email + contraseña. Admin: admin/admin</p>
+      <label>Email</label><input id="email" type="email" placeholder="cliente@empresa.com" />
+      <label>Contraseña</label><input id="password" type="password" placeholder="********" />
+      <button id="loginBtn" style="margin-top:10px">Entrar</button>
+      <p id="loginMsg" class="muted"></p>
     </div>
+  </section>
 
-    <div class="grid g2">
-      <section class="card">
-        <h2>Configuración del bot</h2>
-        <p class="muted">Edita tono, negocio y política de respuesta.</p>
-        <label>Nombre empresa</label>
-        <input id="empresa" value="Clínica Demo" />
-        <label>Tono</label>
-        <select id="tono"><option>Profesional</option><option>Cercano</option><option>Ventas</option></select>
-        <label>Prompt del sistema</label>
-        <textarea id="prompt" rows="5">Responde breve, claro y con enfoque en agendar citas. Si faltan datos, pregunta antes de confirmar.</textarea>
-        <button id="guardar">Guardar configuración</button>
-        <p id="estado" class="muted"></p>
-      </section>
-
-      <section class="card">
-        <h2>Simulador de chat</h2>
-        <div id="chat" class="chat"></div>
-        <div class="grid" style="grid-template-columns:1fr auto;gap:8px;margin-top:10px">
-          <input id="entrada" placeholder="Escribe como cliente..." />
-          <button id="enviar" style="width:auto;padding:0 16px">Enviar</button>
-        </div>
-      </section>
-    </div>
-
-    <section class="card">
-      <h2>Métricas rápidas</h2>
-      <div class="grid g2">
-        <div class="kpi"><span>Conversaciones hoy</span><strong>42</strong></div>
-        <div class="kpi"><span>Tasa de resolución</span><strong>78%</strong></div>
-        <div class="kpi"><span>Costo estimado IA</span><strong>USD 6.20</strong></div>
-        <div class="kpi"><span>Escaladas a humano</span><strong>9</strong></div>
+  <section id="appView" class="app hidden">
+    <aside class="sidebar">
+      <h3 class="logo">Panel IA WhatsApp</h3>
+      <div class="menu" id="menu"></div>
+      <button id="logout" style="margin-top:18px;background:#384d94">Cerrar sesión</button>
+    </aside>
+    <main class="main">
+      <div class="top">
+        <h2 id="title">Inicio</h2>
+        <span id="roleBadge" class="badge"></span>
       </div>
-    </section>
-  </div>
+      <div id="content"></div>
+    </main>
+  </section>
 
-  <script>
-    const chat = document.getElementById('chat');
-    const estado = document.getElementById('estado');
-    const storageKey = 'ia_whatsapp_config';
+<script>
+const usersKey='demo_users';
+const sessionKey='demo_session';
+const menus=['a','b','c','d','e'];
+let state={role:'cliente',email:'',section:'a'};
+function seedUsers(){
+  if(!localStorage.getItem(usersKey)){
+    localStorage.setItem(usersKey, JSON.stringify([
+      {email:'admin',password:'admin',role:'admin',cloudMB:9999,activity:['Creó tenant demo','Cambió precio plan']},
+      {email:'cliente@empresa.com',password:'1234',role:'cliente',cloudMB:250,activity:['Subió catálogo.pdf']}
+    ]));
+  }
+}
+function users(){return JSON.parse(localStorage.getItem(usersKey)||'[]')}
+function saveUsers(v){localStorage.setItem(usersKey,JSON.stringify(v))}
+function login(){
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value.trim();
+  const u=users().find(x=>x.email===email&&x.password===password);
+  if(!u){document.getElementById('loginMsg').textContent='Credenciales inválidas';return}
+  state={role:u.role,email:u.email,section:'a'}; localStorage.setItem(sessionKey,JSON.stringify(state)); render();
+}
+function logout(){localStorage.removeItem(sessionKey); location.reload()}
+function render(){
+  document.getElementById('loginView').classList.add('hidden'); document.getElementById('appView').classList.remove('hidden');
+  document.getElementById('roleBadge').textContent=`${state.role.toUpperCase()} · ${state.email}`;
+  const m=document.getElementById('menu'); m.innerHTML='';
+  menus.forEach(x=>{const b=document.createElement('button'); b.textContent=`Opción ${x.toUpperCase()}`; if(state.section===x)b.classList.add('active'); b.onclick=()=>{state.section=x;renderSection();renderMenuActive()}; m.appendChild(b)});
+  renderSection();
+}
+function renderMenuActive(){[...document.querySelectorAll('.menu button')].forEach((b,i)=>b.classList.toggle('active',menus[i]===state.section));}
+function sectionCliente(){
+  if(state.section==='a') return `<div class='card'><h3>Chat IA (actual)</h3><div id='chat' class='chat'></div><div class='grid' style='grid-template-columns:1fr auto;margin-top:8px'><input id='entrada' placeholder='Escribe...'><button id='send' style='width:auto'>Enviar</button></div></div>`;
+  if(state.section==='b') return `<div class='card'><h3>Fotos y Videos IA personalizados</h3><p class='muted'>Solicita creatividades a medida del cliente.</p><label>Tipo</label><select id='mediaType'><option>Foto</option><option>Video</option></select><label>Prompt creativo</label><textarea id='mediaPrompt' rows='4' placeholder='Ej: video corto promocional de 15s para restaurante'></textarea><button id='genMedia'>Generar</button><p id='mediaOut' class='muted'></p></div>`;
+  if(state.section==='c') return `<div class='card'><h3>Nube de mi cuenta</h3><div id='cloudInfo'></div></div>`;
+  if(state.section==='d') return `<div class='card'><h3>Configuración</h3><p class='muted'>Ajustes de negocio y tono.</p></div>`;
+  return `<div class='card'><h3>Soporte</h3><p class='muted'>Centro de ayuda y tickets.</p></div>`;
+}
+function sectionAdmin(){
+  if(state.section==='a') return `<div class='card'><h3>Resumen global</h3><div class='grid g2'><div class='kpi'><span>Cuentas</span><strong>${users().length}</strong></div><div class='kpi'><span>Storage total</span><strong>${users().reduce((a,b)=>a+(b.cloudMB||0),0)} MB</strong></div></div></div>`;
+  if(state.section==='b') return `<div class='card'><h3>Actividad de clientes</h3><ul>${users().map(u=>`<li><b>${u.email}</b>: ${(u.activity||[]).join(' · ')||'Sin actividad'}</li>`).join('')}</ul></div>`;
+  if(state.section==='c') return `<div class='card'><h3>Modificar servicios</h3><label>Usuario</label><select id='selUser'>${users().map((u,i)=>`<option value='${i}'>${u.email}</option>`).join('')}</select><label>Cuota nube (MB)</label><input id='newQuota' type='number' placeholder='500'><button id='saveQuota'>Guardar cambios</button><p id='adminMsg' class='muted'></p></div>`;
+  if(state.section==='d') return `<div class='card'><h3>Planes y precios</h3><p class='muted'>Gestiona catálogos de servicios.</p></div>`;
+  return `<div class='card'><h3>Logs del sistema</h3><p class='muted'>Auditoría básica.</p></div>`;
+}
+function renderSection(){
+  const c=document.getElementById('content');
+  document.getElementById('title').textContent=`Opción ${state.section.toUpperCase()}`;
+  c.innerHTML=state.role==='admin'?sectionAdmin():sectionCliente();
+  bindSectionEvents();
+}
+function bindSectionEvents(){
+  if(state.role==='cliente' && state.section==='a'){
+    const chat=document.getElementById('chat'); const add=(t,cls)=>{const d=document.createElement('div');d.className='msg '+cls;d.textContent=t;chat.appendChild(d)}; add('Hola, soy tu asistente IA.','b');
+    document.getElementById('send').onclick=()=>{const i=document.getElementById('entrada');if(!i.value.trim())return;add(i.value,'u');add('Gracias, te ayudo con eso ahora mismo.','b');i.value='';chat.scrollTop=chat.scrollHeight;};
+  }
+  if(state.role==='cliente' && state.section==='b'){document.getElementById('genMedia').onclick=()=>{const t=document.getElementById('mediaType').value;document.getElementById('mediaOut').textContent=`Solicitud enviada: ${t} personalizado en cola de generación.`;};}
+  if(state.role==='cliente' && state.section==='c'){const u=users().find(x=>x.email===state.email);document.getElementById('cloudInfo').innerHTML=`<div class='kpi'><span>Cuota disponible</span><strong>${u?.cloudMB||0} MB</strong></div>`;}
+  if(state.role==='admin' && state.section==='c'){document.getElementById('saveQuota').onclick=()=>{const idx=+document.getElementById('selUser').value;const q=+document.getElementById('newQuota').value;const data=users();if(Number.isNaN(q)||q<0)return;data[idx].cloudMB=q;data[idx].activity=[...(data[idx].activity||[]),`Admin actualizó cuota a ${q} MB`];saveUsers(data);document.getElementById('adminMsg').textContent='Servicio actualizado correctamente';};}
+}
 
-    function addMsg(text, cls) {
-      const d = document.createElement('div');
-      d.className = `msg ${cls}`;
-      d.textContent = text;
-      chat.appendChild(d);
-      chat.scrollTop = chat.scrollHeight;
-    }
-
-    function botReply(userText){
-      const empresa = document.getElementById('empresa').value;
-      if(/precio|costo/i.test(userText)) return `En ${empresa}, el costo depende del servicio. ¿Qué servicio te interesa?`;
-      if(/hola|buenas/i.test(userText)) return `¡Hola! Soy el asistente virtual de ${empresa}. ¿Cómo te ayudo hoy?`;
-      return `Perfecto, te ayudo con eso. ¿Me compartes tu nombre y horario preferido?`;
-    }
-
-    document.getElementById('enviar').onclick = () => {
-      const entrada = document.getElementById('entrada');
-      const txt = entrada.value.trim();
-      if(!txt) return;
-      addMsg(txt,'u');
-      setTimeout(()=>addMsg(botReply(txt),'b'),300);
-      entrada.value='';
-    };
-
-    document.getElementById('guardar').onclick = () => {
-      localStorage.setItem(storageKey, JSON.stringify({
-        empresa: document.getElementById('empresa').value,
-        tono: document.getElementById('tono').value,
-        prompt: document.getElementById('prompt').value,
-      }));
-      estado.textContent = 'Configuración guardada localmente (demo).';
-    };
-
-    const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
-    if(saved){
-      document.getElementById('empresa').value = saved.empresa || '';
-      document.getElementById('tono').value = saved.tono || 'Profesional';
-      document.getElementById('prompt').value = saved.prompt || '';
-    }
-
-    addMsg('Demo iniciada. Escribe un mensaje para probar el flujo.','b');
-  </script>
+document.getElementById('loginBtn').onclick=login; document.getElementById('logout').onclick=logout; seedUsers();
+const ses=JSON.parse(localStorage.getItem(sessionKey)||'null'); if(ses){state=ses;render();}
+</script>
 </body>
 </html>
