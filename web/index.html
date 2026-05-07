@@ -63,10 +63,10 @@
 
 <script>
 const U='lk_users',S='lk_session';
-const menuCliente=['Dashboard','Chatbot','Fuentes','Widget Web','Media IA'];
+const menuCliente=['Dashboard','Servicios','Chatbot','Programar','Widget Web'];
 const menuAdmin=['Resumen','Usuarios','Servicios','Actividad','Ajustes'];
 let state={role:'cliente',email:'',menu:0};
-const def=[{email:'admin',password:'admin',phone:'-',role:'admin',cloudMB:10000,activity:['Inicio plataforma']}];
+const def=[{email:'admin',password:'admin',phone:'-',role:'admin',cloudMB:10000,activity:['Inicio plataforma'],services:{},config:{}}];
 if(!localStorage.getItem(U)) localStorage.setItem(U,JSON.stringify(def));
 const users=()=>JSON.parse(localStorage.getItem(U)||'[]'); const save=v=>localStorage.setItem(U,JSON.stringify(v));
 
@@ -79,7 +79,7 @@ document.getElementById('btnRegister').onclick=()=>{
   const phone=regPhone.value.trim(),email=regEmail.value.trim(),password=regPass.value.trim();
   if(!phone||!email||!password) return authMsg.textContent='Completa todos los campos';
   const data=users(); if(data.some(u=>u.email===email)) return authMsg.textContent='Ese correo ya existe';
-  data.push({phone,email,password,role:'cliente',cloudMB:500,activity:['Cuenta creada']}); save(data);
+  data.push({phone,email,password,role:'cliente',cloudMB:500,activity:['Cuenta creada'],services:{chatbot:true,media:false,crm:false},config:{prompt:'',web:''}}); save(data);
   authMsg.textContent='Cuenta creada. Ahora inicia sesión.'; show('login'); loginEmail.value=email; loginPass.value='';
 };
 
@@ -101,11 +101,12 @@ function paint(){
   content.innerHTML=state.role==='admin'?adminView():clientView(); bind();
 }
 function clientView(){
-  if(state.menu===0) return `<div class='grid g2'><div class='kpi'><span>Conversaciones</span><b>38</b></div><div class='kpi'><span>Nube disponible</span><b>${users().find(u=>u.email===state.email)?.cloudMB||0} MB</b></div></div>`;
-  if(state.menu===1) return `<div class='card'><h3>Chatbot</h3><div id='chat' class='chat'></div><div class='grid' style='grid-template-columns:1fr auto;margin-top:8px'><input id='inMsg' placeholder='Escribe...'><button id='send' style='width:auto'>Enviar</button></div></div>`;
-  if(state.menu===2) return `<div class='card'><h3>Conectar fuentes</h3><p class='muted'>Vincula web, CRM, catálogo y documentos para entrenar contexto.</p><label>URL Web vendedor</label><input id='srcWeb' placeholder='https://mi-tienda.com'><label>CRM/API Key</label><input id='srcCrm' placeholder='api_xxx'><button id='saveSrc'>Guardar conexiones</button><p id='srcMsg' class='muted'></p></div>`;
-  if(state.menu===3) return `<div class='card'><h3>Widget web adaptable</h3><p class='muted'>El botón 😊 flotante se puede arrastrar por toda la pantalla y queda siempre visible.</p></div>`;
-  return `<div class='card'><h3>Crear fotos y videos IA</h3><label>Tipo</label><select id='type'><option>Foto</option><option>Video</option></select><label>Instrucción</label><textarea id='prompt'></textarea><button id='gen'>Generar</button><p id='genMsg' class='muted'></p></div>`;
+  const me=users().find(u=>u.email===state.email) || {services:{},config:{}};
+  if(state.menu===0) return `<div class='grid g2'><div class='kpi'><span>Conversaciones</span><b>38</b></div><div class='kpi'><span>Nube disponible</span><b>${me.cloudMB||0} MB</b></div></div><div class='card'><h3>Bienvenido a tu web de cliente</h3><p class='muted'>Desde aquí eliges servicios y programas tu chatbot.</p></div>`;
+  if(state.menu===1) return `<div class='card'><h3>Elegir servicios</h3><label><input id='svChat' type='checkbox' ${me.services?.chatbot?'checked':''}/> Chatbot WhatsApp</label><br><label><input id='svMedia' type='checkbox' ${me.services?.media?'checked':''}/> Fotos/Videos IA</label><br><label><input id='svCrm' type='checkbox' ${me.services?.crm?'checked':''}/> Integración CRM</label><button id='saveServices'>Guardar servicios</button><p id='svMsg' class='muted'></p></div>`;
+  if(state.menu===2) return `<div class='card'><h3>Chatbot</h3><div id='chat' class='chat'></div><div class='grid' style='grid-template-columns:1fr auto;margin-top:8px'><input id='inMsg' placeholder='Escribe...'><button id='send' style='width:auto'>Enviar</button></div></div>`;
+  if(state.menu===3) return `<div class='card'><h3>Programar lo tuyo</h3><label>URL web del vendedor</label><input id='srcWeb' value='${me.config?.web||''}' placeholder='https://mi-tienda.com'><label>Prompt del negocio</label><textarea id='bizPrompt'>${me.config?.prompt||''}</textarea><button id='saveProgram'>Guardar programación</button><p id='srcMsg' class='muted'></p></div>`;
+  return `<div class='card'><h3>Widget web adaptable</h3><p class='muted'>El botón 😊 flotante se puede arrastrar por toda la pantalla y queda siempre visible.</p></div>`;
 }
 function adminView(){
   if(state.menu===0) return `<div class='grid g2'><div class='kpi'><span>Usuarios</span><b>${users().length}</b></div><div class='kpi'><span>Storage total</span><b>${users().reduce((a,b)=>a+(b.cloudMB||0),0)} MB</b></div></div>`;
@@ -115,9 +116,9 @@ function adminView(){
   return `<div class='card'><h3>Ajustes plataforma</h3><p class='muted'>Configura servicios globales.</p></div>`;
 }
 function bind(){
-  if(state.role==='cliente'&&state.menu===1){const c=document.getElementById('chat');const add=(t,cl)=>{const d=document.createElement('div');d.className='msg '+cl;d.textContent=t;c.appendChild(d)};add('Hola, soy LK IA 😊','b');send.onclick=()=>{if(!inMsg.value.trim())return;add(inMsg.value,'u');add('Perfecto, ya lo proceso con tus fuentes conectadas.','b');inMsg.value='';c.scrollTop=c.scrollHeight;};}
-  if(state.role==='cliente'&&state.menu===2){saveSrc.onclick=()=>{srcMsg.textContent='Conexiones guardadas (demo).';const d=users();const i=d.findIndex(x=>x.email===state.email);d[i].activity.push('Actualizó fuentes de datos');save(d);};}
-  if(state.role==='cliente'&&state.menu===4){gen.onclick=()=>genMsg.textContent=`Solicitud de ${type.value} enviada correctamente.`;}
+  if(state.role==='cliente'&&state.menu===2){const c=document.getElementById('chat');const add=(t,cl)=>{const d=document.createElement('div');d.className='msg '+cl;d.textContent=t;c.appendChild(d)};add('Hola, soy LK IA 😊','b');send.onclick=()=>{if(!inMsg.value.trim())return;add(inMsg.value,'u');add('Perfecto, ya lo proceso con tus fuentes conectadas.','b');inMsg.value='';c.scrollTop=c.scrollHeight;};}
+  if(state.role==='cliente'&&state.menu===1){saveServices.onclick=()=>{const d=users();const i=d.findIndex(x=>x.email===state.email);d[i].services={chatbot:svChat.checked,media:svMedia.checked,crm:svCrm.checked};d[i].activity.push('Actualizó servicios');save(d);svMsg.textContent='Servicios guardados';};}
+  if(state.role==='cliente'&&state.menu===3){saveProgram.onclick=()=>{const d=users();const i=d.findIndex(x=>x.email===state.email);d[i].config={web:srcWeb.value.trim(),prompt:bizPrompt.value.trim()};d[i].activity.push('Programó su configuración');save(d);srcMsg.textContent='Configuración guardada';};}
   if(state.role==='admin'&&state.menu===2){saveQ.onclick=()=>{const d=users(),i=+uSel.value,val=+q.value;if(Number.isNaN(val)||val<0)return;d[i].cloudMB=val;d[i].activity.push(`Admin cambió cuota a ${val} MB`);save(d);qMsg.textContent='Actualizado';};}
 }
 

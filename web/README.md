@@ -1,26 +1,12 @@
 # LK IA SERVICES (demo UI)
 
-## Login y registro
-- Login normal por correo + contraseña.
-- Registro de usuario con:
-  - Número de teléfono
-  - Correo (método de login)
-  - Contraseña elegida
+## Flujo solicitado implementado
+1. Un usuario crea su cuenta (teléfono, correo y contraseña).
+2. Luego usa ese correo/contraseña en Login.
+3. Entra a su web de cliente.
+4. Puede elegir qué servicio usar.
+5. Puede programar su configuración (web del vendedor + prompt del negocio).
+
+## Credenciales
 - Admin global: `admin / admin`
-
-## Menú cliente
-- Dashboard
-- Chatbot
-- Fuentes (web/CRM/documentos)
-- Widget Web
-- Media IA (fotos/videos)
-
-## Menú administrador
-- Resumen
-- Usuarios
-- Servicios (modificar cuota nube)
-- Actividad
-- Ajustes
-
-## Widget adaptable
-Hay un botón flotante 😊 siempre visible y arrastrable por pantalla para simular el chatbot incrustable en web del vendedor.
+- Clientes: los que se creen desde "Crear usuario"
