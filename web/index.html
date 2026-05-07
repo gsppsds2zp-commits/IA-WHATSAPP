@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Chatbot IA WhatsApp</title>
+  <style>
+    :root{--bg:#0b1020;--card:#151d35;--soft:#223058;--text:#e8ecff;--muted:#9db0e8;--ok:#3ddc97}
+    *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif}
+    body{margin:0;background:linear-gradient(120deg,#0b1020,#101834);color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    .grid{display:grid;gap:16px}
+    .g2{grid-template-columns:1fr 1fr}
+    .card{background:var(--card);border:1px solid #26335f;border-radius:14px;padding:16px}
+    h1,h2{margin:0 0 8px}
+    .muted{color:var(--muted);font-size:14px}
+    input,textarea,select,button{width:100%;padding:10px;border-radius:10px;border:1px solid #32457f;background:#0d1530;color:var(--text)}
+    button{background:#2f4fd8;border:none;font-weight:700;cursor:pointer}
+    .chat{height:280px;overflow:auto;background:#0d1530;border-radius:10px;padding:10px}
+    .msg{padding:8px 10px;border-radius:10px;margin:8px 0;max-width:80%}
+    .u{background:#2a3d79;margin-left:auto}
+    .b{background:#203058}
+    .kpi{display:flex;justify-content:space-between;padding:10px;border-radius:10px;background:#101a3a;margin-top:8px}
+    .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--ok);margin-right:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap grid">
+    <div class="card">
+      <h1>Panel SaaS · Chatbot IA para WhatsApp</h1>
+      <p class="muted"><span class="dot"></span>Demo visual funcional del panel admin (MVP).</p>
+    </div>
+
+    <div class="grid g2">
+      <section class="card">
+        <h2>Configuración del bot</h2>
+        <p class="muted">Edita tono, negocio y política de respuesta.</p>
+        <label>Nombre empresa</label>
+        <input id="empresa" value="Clínica Demo" />
+        <label>Tono</label>
+        <select id="tono"><option>Profesional</option><option>Cercano</option><option>Ventas</option></select>
+        <label>Prompt del sistema</label>
+        <textarea id="prompt" rows="5">Responde breve, claro y con enfoque en agendar citas. Si faltan datos, pregunta antes de confirmar.</textarea>
+        <button id="guardar">Guardar configuración</button>
+        <p id="estado" class="muted"></p>
+      </section>
+
+      <section class="card">
+        <h2>Simulador de chat</h2>
+        <div id="chat" class="chat"></div>
+        <div class="grid" style="grid-template-columns:1fr auto;gap:8px;margin-top:10px">
+          <input id="entrada" placeholder="Escribe como cliente..." />
+          <button id="enviar" style="width:auto;padding:0 16px">Enviar</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>Métricas rápidas</h2>
+      <div class="grid g2">
+        <div class="kpi"><span>Conversaciones hoy</span><strong>42</strong></div>
+        <div class="kpi"><span>Tasa de resolución</span><strong>78%</strong></div>
+        <div class="kpi"><span>Costo estimado IA</span><strong>USD 6.20</strong></div>
+        <div class="kpi"><span>Escaladas a humano</span><strong>9</strong></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const estado = document.getElementById('estado');
+    const storageKey = 'ia_whatsapp_config';
+
+    function addMsg(text, cls) {
+      const d = document.createElement('div');
+      d.className = `msg ${cls}`;
+      d.textContent = text;
+      chat.appendChild(d);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function botReply(userText){
+      const empresa = document.getElementById('empresa').value;
+      if(/precio|costo/i.test(userText)) return `En ${empresa}, el costo depende del servicio. ¿Qué servicio te interesa?`;
+      if(/hola|buenas/i.test(userText)) return `¡Hola! Soy el asistente virtual de ${empresa}. ¿Cómo te ayudo hoy?`;
+      return `Perfecto, te ayudo con eso. ¿Me compartes tu nombre y horario preferido?`;
+    }
+
+    document.getElementById('enviar').onclick = () => {
+      const entrada = document.getElementById('entrada');
+      const txt = entrada.value.trim();
+      if(!txt) return;
+      addMsg(txt,'u');
+      setTimeout(()=>addMsg(botReply(txt),'b'),300);
+      entrada.value='';
+    };
+
+    document.getElementById('guardar').onclick = () => {
+      localStorage.setItem(storageKey, JSON.stringify({
+        empresa: document.getElementById('empresa').value,
+        tono: document.getElementById('tono').value,
+        prompt: document.getElementById('prompt').value,
+      }));
+      estado.textContent = 'Configuración guardada localmente (demo).';
+    };
+
+    const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+    if(saved){
+      document.getElementById('empresa').value = saved.empresa || '';
+      document.getElementById('tono').value = saved.tono || 'Profesional';
+      document.getElementById('prompt').value = saved.prompt || '';
+    }
+
+    addMsg('Demo iniciada. Escribe un mensaje para probar el flujo.','b');
+  </script>
+</body>
+</html>
